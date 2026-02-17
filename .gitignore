@@ -1,0 +1,12 @@
+# Ignore compiled Java files
+bin/
+*.class
+
+# If you create a JAR later, you might want to ignore it too
+*.jar
+
+# VS Code specific files
+.settings/
+.project/
+.classpath/
+.vscode/
