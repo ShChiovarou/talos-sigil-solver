@@ -17,7 +17,6 @@ if %errorlevel% neq 0 (
 
 :: 4. Run the program
 cls
-echo Starting Sigil Puzzle Solver...
 echo.
 java -cp bin Runner
 

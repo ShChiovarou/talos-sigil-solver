@@ -30,8 +30,17 @@ public class Runner {
         System.out.println("Lets solve this puzzle that is " + rows + " x " + cols + ". But first we need the sigils.");
         
         List<Sigil> inventory = new ArrayList<>();
-        String[] pieceNames = {"I", "J", "L", "S", "Z", "O", "T"};
-        Sigil[] sigilTypes = {Sigil.I, Sigil.J, Sigil.L, Sigil.S, Sigil.Z, Sigil.O, Sigil.T};
+        String[] pieceNames = {"Z", "S", "T", "J", "L", "I", "O"};
+
+        Sigil[] sigilTypes = {
+            Sigil.Z, // Most restrictive
+            Sigil.S, 
+            Sigil.T, 
+            Sigil.J, 
+            Sigil.L, 
+            Sigil.I, 
+            Sigil.O  // Least restrictive (Gap filler)
+        };
 
         for (int i = 0; i < pieceNames.length; i++) {
             System.out.print("How many " + pieceNames[i] + " sigils? ");
@@ -52,7 +61,7 @@ public class Runner {
 
         Solver solver = new Solver(board, inventory);
 
-        boolean isSolved = solver.solve(0);
+        boolean isSolved = solver.solve();
 
         if (isSolved) {
             System.out.println("Puzzle Solved!");

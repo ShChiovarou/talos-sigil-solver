@@ -8,37 +8,41 @@ import java.util.List;
 public class Solver {
     Board board;
     List<Sigil> inventory;
+    boolean[] used;
 
     public Solver(Board board, List<Sigil> inventory) {
         this.board = board;
         this.inventory = inventory;
+        this.used = new boolean[inventory.size()];
     }
 
-    public boolean solve(int index) {
-        if(index == inventory.size()) {
-            return true;
-        }
-        
-        Sigil curSigil = inventory.get(index);
+    public boolean solve() {
+        Point anchor = board.findFirstEmpty();
 
-        for( int r = 0; r < board.getRows(); r++) {
-            for(int c = 0; c < board.getCols(); c++) {
-                for(int rot = 0; rot < curSigil.rotations.length; rot++)
-                {
-                    if(board.canPlace(curSigil, rot, r, c)) {
-                        board.place(curSigil, rot, r, c, index + 1);
-                    
+        if (anchor == null) return true;
 
-                        if(solve(index + 1)){
-                            return true;
-                        }
+        for (int i = 0; i < inventory.size(); i++) {
+            if (used[i]) continue; 
 
-                        board.remove(curSigil, rot, r, c, index + 1);
+            Sigil curSigil = inventory.get(i);
+            used[i] = true;
+
+            for (int rot = 0; rot < curSigil.rotations.length; rot++) {
+                for (Point offset : curSigil.rotations[rot]) {
+                    int r = anchor.r() - offset.r();
+                    int c = anchor.c() - offset.c();
+
+                    if (board.canPlace(curSigil, rot, r, c)) {
+                        board.place(curSigil, rot, r, c, i + 1);
+
+                        if (solve()) return true;
+
+                        board.remove(curSigil, rot, r, c, i + 1);
                     }
                 }
             }
+            used[i] = false;
         }
-
 
         return false;
     }

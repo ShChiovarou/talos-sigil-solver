@@ -98,10 +98,10 @@ public class Board {
 
         for(Point p : points) {
 
-            if(r + p.r() >= rows) {
+            if(r + p.r() >= rows || r + p.r() < 0 ) {
                 return false;
             }
-            if(c + p.c() >= cols) {
+            if(c + p.c() >= cols ||  c + p.c() < 0) {
                 return false;
             }
             if( board[r+p.r()][c+p.c()] != 0) {
@@ -126,5 +126,14 @@ public class Board {
         for(Point p : points) {
             board[r+p.r()][c+p.c()] = 0;
         }
+    }
+
+    public Point findFirstEmpty() {
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (board[r][c] == 0) return new Point(r, c);
+            }
+        }
+        return null;
     }
 }
