@@ -1,27 +1,39 @@
 @echo off
 title Sigil Puzzle Solver
-:: 1. Create a bin folder if it doesn't exist
-if not exist "bin" mkdir bin
+setlocal enabledelayedexpansion
 
-:: 2. Compile the code (this ensures your latest changes are included)
+if not exist "bin" mkdir bin
 echo Compiling...
 javac -d bin src/Runner.java src/engine/*.java src/solver/*.java
-
-:: 3. Check if compilation worked
 if %errorlevel% neq 0 (
-    echo.
-    echo [!] Compilation Error. Please check your code.
+    echo [!] Compilation Error.
     pause
     exit /b %errorlevel%
 )
 
-:: 4. Run the program
 cls
+echo ===================================
+echo       SIGIL PUZZLE SOLVER
+echo ===================================
+
+:puzzle_loop
 echo.
 java -cp bin Runner
 
-:: 5. Keep the window open!
 echo.
 echo -----------------------------------
-echo Puzzle processing complete.
-pause
+set /p "again=Solve another puzzle? (y/n): "
+
+set "firstChar=%again:~0,1%"
+if /i "%firstChar%"=="y" (
+    echo.
+    echo ===================================
+    echo           NEXT PUZZLE
+    echo ===================================
+    goto puzzle_loop
+)
+
+:end_script
+echo.
+timeout /t 2 >nul
+exit
